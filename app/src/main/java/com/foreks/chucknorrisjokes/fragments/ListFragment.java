@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import com.foreks.chucknorrisjokes.R;
 import java.lang.String;
 
+import com.foreks.chucknorrisjokes.adapters.ListAdapter;
 import com.foreks.chucknorrisjokes.models.CategoriesResponse;
 import com.foreks.chucknorrisjokes.services.APIClient;
 import com.foreks.chucknorrisjokes.services.APIService;
@@ -60,6 +62,8 @@ public class ListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         Call<List<String>> call = apiService.fetchCategories();
         call.enqueue(new Callback<List<String>>() {
             @Override
@@ -70,6 +74,7 @@ public class ListFragment extends Fragment {
                         CategoriesResponse mCategoriesResponse = new CategoriesResponse(response.body().get(x));
                         mCategories.add(mCategoriesResponse);
                     }
+                    mRecyclerView.setAdapter(new ListAdapter(mCategories, getActivity().getApplicationContext()));
                 }
             }
             @Override
