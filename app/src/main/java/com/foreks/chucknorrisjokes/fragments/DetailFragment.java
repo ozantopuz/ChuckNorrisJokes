@@ -22,12 +22,13 @@ import butterknife.Unbinder;
 
 public class DetailFragment extends Fragment {
 
+    private final String TAG = this.getClass().getSimpleName();
+
     @BindView(R.id.fragment_detail_image_view)
     ImageView mImageView;
     @BindView(R.id.fragment_detail_text_view)
     TextView mTextView;
     private Unbinder mUnbinder;
-
 
     public static DetailFragment newInstance(Context context) {
         return (DetailFragment) DetailFragment.instantiate(context, DetailFragment.class.getName());
@@ -44,6 +45,7 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override
