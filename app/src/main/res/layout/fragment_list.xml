@@ -6,9 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.foreks.chucknorrisjokes.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/activity_main_frame"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_list_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:scrollbars="none"/>
 
 </RelativeLayout>
