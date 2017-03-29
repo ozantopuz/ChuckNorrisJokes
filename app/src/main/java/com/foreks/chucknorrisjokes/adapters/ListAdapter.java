@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.foreks.chucknorrisjokes.MainActivity;
 import com.foreks.chucknorrisjokes.R;
 import com.foreks.chucknorrisjokes.models.CategoriesResponse;
 
@@ -57,6 +58,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((MainActivity) view.getContext()).showDetailFragment(mCategories.get(position).getCategories());
             }
         });
 

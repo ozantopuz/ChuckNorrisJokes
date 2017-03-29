@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(FRAME, ListFragment.newInstance(this)).commit();
     }
 
-    public void showDetailFragment() {
-        getSupportFragmentManager().beginTransaction().replace(FRAME, DetailFragment.newInstance(this)).commit();
+    public void showDetailFragment(String category) {
+        getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(FRAME, DetailFragment.newInstance(this, category)).commit();
     }
 }
