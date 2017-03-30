@@ -18,10 +18,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showListFragment() {
-        getSupportFragmentManager().beginTransaction().replace(FRAME, ListFragment.newInstance(this)).commit();
+        getSupportFragmentManager().beginTransaction().addToBackStack(null).add(FRAME, ListFragment.newInstance(this)).commit();
     }
 
     public void showDetailFragment(String category) {
         getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(FRAME, DetailFragment.newInstance(this, category)).commit();
     }
+
 }

@@ -69,4 +69,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     public int getItemCount() {
         return mCategories.size();
     }
+
+    public void notifyDataChanged(){
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        notifyDataSetChanged();
+    }
 }

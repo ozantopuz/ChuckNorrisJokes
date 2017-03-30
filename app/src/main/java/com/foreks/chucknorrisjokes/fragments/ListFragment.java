@@ -38,6 +38,7 @@ public class ListFragment extends Fragment {
     private final String TAG = this.getClass().getSimpleName();
     private APIService apiService;
     private ArrayList<CategoriesResponse> mCategories;
+    ListAdapter mAdapter;
 
     @BindView(R.id.fragment_list_recycler_view)
     RecyclerView mRecyclerView;
@@ -62,7 +63,11 @@ public class ListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mAdapter = new ListAdapter(mCategories, getActivity().getApplicationContext());
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.clear();
 
         Call<List<String>> call = apiService.fetchCategories();
         call.enqueue(new Callback<List<String>>() {
@@ -73,8 +78,8 @@ public class ListFragment extends Fragment {
                     for(int x = 0; x < response.body().size(); x++) {
                         CategoriesResponse mCategoriesResponse = new CategoriesResponse(response.body().get(x));
                         mCategories.add(mCategoriesResponse);
+                        mAdapter.notifyDataChanged();
                     }
-                    mRecyclerView.setAdapter(new ListAdapter(mCategories, getActivity().getApplicationContext()));
                 }
             }
             @Override
