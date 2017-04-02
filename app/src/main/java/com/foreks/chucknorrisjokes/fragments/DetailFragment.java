@@ -15,7 +15,13 @@ import com.foreks.chucknorrisjokes.R;
 import com.foreks.chucknorrisjokes.models.RandomJokeResponse;
 import com.foreks.chucknorrisjokes.services.APIClient;
 import com.foreks.chucknorrisjokes.services.APIService;
+import com.foreks.chucknorrisjokes.utils.StringUtils;
 import com.squareup.picasso.Picasso;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,11 +40,16 @@ public class DetailFragment extends Fragment {
     private final String TAG = this.getClass().getSimpleName();
     String getArgsCategory;
     private APIService apiService;
+    StringUtils stringUtils;
 
     @BindView(R.id.fragment_detail_image_view)
     ImageView mImageView;
     @BindView(R.id.fragment_detail_text_view)
     TextView mTextView;
+    @BindView(R.id.fragment_detail_text_view_words)
+    TextView mWordsTextView;
+    @BindView(R.id.fragment_detail_text_view_letters)
+    TextView mLettersTextView;
     private Unbinder mUnbinder;
 
     public static DetailFragment newInstance(Context context, String category) {
@@ -53,6 +64,7 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         apiService = APIClient.getClient().create(APIService.class);
+        stringUtils = new StringUtils();
         return view;
     }
 
@@ -67,8 +79,18 @@ public class DetailFragment extends Fragment {
             @Override
             public void onResponse(Call<RandomJokeResponse> call, Response<RandomJokeResponse> response) {
 
-                if(response.isSuccessful()){
-                    mTextView.setText(response.body().getValue());
+                if (response.isSuccessful()) {
+                    String value = response.body().getValue();
+
+                    String[] wordArray = stringUtils.splitSentenceIntoWords(value);
+                    String evaluatedSentence = stringUtils.createStringWithOccurenceNumbers(wordArray);
+
+                    String[] charArray = stringUtils.toCharacterArray(value);
+                    String evaluatedSentenceFromChars = stringUtils.createStringWithOccurenceNumbers(charArray);
+
+                    mTextView.setText(value);
+                    mWordsTextView.setText(evaluatedSentence);
+                    mLettersTextView.setText(evaluatedSentenceFromChars);
 
                     Picasso.with(getActivity())
                             .load(response.body().getIconUrl())
@@ -77,12 +99,12 @@ public class DetailFragment extends Fragment {
                             .into(mImageView);
                 }
             }
+
             @Override
             public void onFailure(Call<RandomJokeResponse> call, Throwable t) {
-                Log.e(TAG," Response Failure "+String.valueOf(t.getMessage()));
+                Log.e(TAG, " Response Failure " + String.valueOf(t.getMessage()));
             }
         });
-
     }
 
     @Override
